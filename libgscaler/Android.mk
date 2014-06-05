@@ -34,6 +34,7 @@ LOCAL_SHARED_LIBRARIES += libexynosscaler
 endif
 
 LOCAL_C_INCLUDES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	$(LOCAL_PATH)/../include \
 	$(TOP)/hardware/samsung_slsi/exynos/include \
 	$(TOP)/hardware/samsung_slsi/exynos/libexynosutils
@@ -41,6 +42,10 @@ LOCAL_C_INCLUDES := \
 LOCAL_SRC_FILES := \
 	libgscaler_obj.cpp \
 	libgscaler.cpp
+	
+LOCAL_ADDITIONAL_DEPENDENCIES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
+
 
 LOCAL_MODULE_TAGS := eng
 LOCAL_MODULE := libexynosgscaler
