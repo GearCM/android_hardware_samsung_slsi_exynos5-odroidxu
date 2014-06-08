@@ -16,6 +16,7 @@
 #
 
 ifeq ($(TARGET_BOARD_PLATFORM),exynos5)
+ifeq ($(TARGET_SLSI_VARIANT),insignal)
 
 exynos5_dirs := \
 	libcodec \
@@ -41,4 +42,5 @@ endif
 
 include $(call all-named-subdir-makefiles,$(exynos5_dirs))
 
+endif
 endif
