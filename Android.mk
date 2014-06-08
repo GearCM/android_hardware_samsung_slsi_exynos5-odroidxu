@@ -16,7 +16,7 @@
 #
 
 ifeq ($(TARGET_BOARD_PLATFORM),exynos5)
-ifeq ($(TARGET_SLSI_VARIANT),insignal)
+ifeq ($(TARGET_SLSI_VARIANT),odroidxu)
 
 exynos5_dirs := \
 	libcodec \
