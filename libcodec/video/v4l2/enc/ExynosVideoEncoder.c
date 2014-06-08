@@ -54,7 +54,7 @@
 #define H263_CTRL_NUM         18
 #define MAX_INPUTBUFFER_COUNT 32
 #define MAX_OUTPUTBUFFER_COUNT 32
-#define VP8_CTRL_NUM          30
+/*/ #define VP8_CTRL_NUM          30
 
 /*
  * [Common] __CodingType_To_V4L2PixelFormat
@@ -70,10 +70,10 @@ static unsigned int __CodingType_To_V4L2PixelFormat(ExynosVideoCodingType coding
     case VIDEO_CODING_MPEG4:
         pixelformat = V4L2_PIX_FMT_MPEG4;
         break;
-    case VIDEO_CODING_VP8:
-        pixelformat = V4L2_PIX_FMT_VP8;
-        break;
-    case VIDEO_CODING_H263:
+/*  case VIDEO_CODING_VP8:
+ *      pixelformat = V4L2_PIX_FMT_VP8;
+ *      break;
+ */ case VIDEO_CODING_H263:
         pixelformat = V4L2_PIX_FMT_H263;
         break;
     case VIDEO_CODING_VC1:
@@ -658,89 +658,89 @@ static ExynosVideoErrorType MFC_Encoder_Set_EncParam (
         break;
     }
 
-    case VIDEO_CODING_VP8:
-    {
-        ExynosVideoEncVp8Param *pVp8Param = &pEncParam->codecParam.vp8;
-
-        /* common parameters but id is depends on codec */
-        ext_ctrl[8].id = V4L2_CID_MPEG_VIDEO_VP8_I_FRAME_QP;
-        ext_ctrl[8].value = pCommonParam->FrameQp;
-        ext_ctrl[9].id =  V4L2_CID_MPEG_VIDEO_VP8_P_FRAME_QP;
-        ext_ctrl[9].value = pCommonParam->FrameQp_P;
-        ext_ctrl[10].id =  V4L2_CID_MPEG_VIDEO_VP8_MAX_QP;
-        ext_ctrl[10].value = pCommonParam->QSCodeMax;
-        ext_ctrl[11].id = V4L2_CID_MPEG_VIDEO_VP8_MIN_QP;
-        ext_ctrl[11].value = pCommonParam->QSCodeMin;
-        ext_ctrl[12].id = V4L2_CID_MPEG_MFC51_VIDEO_RC_REACTION_COEFF;
-        ext_ctrl[12].value = pCommonParam->CBRPeriodRf;
-
-        /* H263 specific parameters */
-        ext_ctrl[13].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_RC_FRAME_RATE;
-        ext_ctrl[13].value = pVp8Param->FrameRate;
-        ext_ctrl[14].id = V4L2_CID_MPEG_VIDEO_VBV_SIZE;
-        ext_ctrl[14].value = 0;
-        ext_ctrl[15].id = V4L2_CID_MPEG_VIDEO_HEADER_MODE;
-        ext_ctrl[15].value = V4L2_MPEG_VIDEO_HEADER_MODE_SEPARATE;
-        ext_ctrl[16].id = V4L2_CID_MPEG_MFC51_VIDEO_RC_FIXED_TARGET_BIT;
-        ext_ctrl[16].value = 1;
-
-        /* Initial parameters : Frame Skip */
-        switch (pInitParam->FrameSkip) {
-        case VIDEO_FRAME_SKIP_MODE_LEVEL_LIMIT:
-            ext_ctrl[17].id = V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE;
-            ext_ctrl[17].value = V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_LEVEL_LIMIT;
-            break;
-        case VIDEO_FRAME_SKIP_MODE_BUF_LIMIT:
-            ext_ctrl[17].id = V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE;
-            ext_ctrl[17].value = V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_BUF_LIMIT;
-            break;
-        default:
-            /* VIDEO_FRAME_SKIP_MODE_DISABLE (default) */
-            ext_ctrl[17].id = V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE;
-            ext_ctrl[17].value = V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_DISABLED;
-            break;
-        }
-
-        ext_ctrl[18].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_VERSION;
-        ext_ctrl[18].value = pVp8Param->Vp8Version;
-
-        ext_ctrl[19].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_NUM_OF_PARTITIONS;
-        ext_ctrl[19].value = pVp8Param->Vp8NumberOfPartitions;
-
-        ext_ctrl[20].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_FILTER_LEVEL;
-        ext_ctrl[20].value = pVp8Param->Vp8FilterLevel;
-
-        ext_ctrl[21].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_FILTER_SHARPNESS;
-        ext_ctrl[21].value = pVp8Param->Vp8FilterSharpness;
-
-        ext_ctrl[22].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_GOLDEN_FRAMESEL;
-        ext_ctrl[22].value = pVp8Param->Vp8GoldenFrameSel;
-
-        ext_ctrl[23].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_HIERARCHY_QP_ENABLE;
-        ext_ctrl[23].value = pVp8Param->HierarchyQpEnable;
-
-        ext_ctrl[24].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_HIERARCHY_QP_LAYER0;
-        ext_ctrl[24].value = pVp8Param->HierarchyQPLayer0;
-
-        ext_ctrl[25].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_HIERARCHY_QP_LAYER1;
-        ext_ctrl[25].value = pVp8Param->HierarchyQPLayer1;
-
-        ext_ctrl[26].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_HIERARCHY_QP_LAYER2;
-        ext_ctrl[26].value = pVp8Param->HierarchyQPLayer2;
-
-        ext_ctrl[27].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_REF_NUMBER_FOR_PFRAMES;
-        ext_ctrl[27].value = pVp8Param->RefNumberForPFrame;
-
-        ext_ctrl[28].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_DISABLE_INTRA_MD4X4;
-        ext_ctrl[28].value = pVp8Param->DisableIntraMd4x4;
-
-        ext_ctrl[29].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_NUM_TEMPORAL_LAYER;
-        ext_ctrl[29].value = pVp8Param->NumTemporalLayer;
-
-        ext_ctrls.count = VP8_CTRL_NUM;
-        break;
-    }
-    default:
+/*   case VIDEO_CODING_VP8:
+ *    {
+ *       ExynosVideoEncVp8Param *pVp8Param = &pEncParam->codecParam.vp8;
+ *
+ */       /* common parameters but id is depends on codec */
+/*       ext_ctrl[8].id = V4L2_CID_MPEG_VIDEO_VP8_I_FRAME_QP;
+ *       ext_ctrl[8].value = pCommonParam->FrameQp;
+ *       ext_ctrl[9].id =  V4L2_CID_MPEG_VIDEO_VP8_P_FRAME_QP;
+ *       ext_ctrl[9].value = pCommonParam->FrameQp_P;
+ *       ext_ctrl[10].id =  V4L2_CID_MPEG_VIDEO_VP8_MAX_QP;
+ *       ext_ctrl[10].value = pCommonParam->QSCodeMax;
+ *       ext_ctrl[11].id = V4L2_CID_MPEG_VIDEO_VP8_MIN_QP;
+ *       ext_ctrl[11].value = pCommonParam->QSCodeMin;
+ *       ext_ctrl[12].id = V4L2_CID_MPEG_MFC51_VIDEO_RC_REACTION_COEFF;
+ *       ext_ctrl[12].value = pCommonParam->CBRPeriodRf;
+ *
+ */      /* H263 specific parameters */
+/*      ext_ctrl[13].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_RC_FRAME_RATE;
+ *      ext_ctrl[13].value = pVp8Param->FrameRate;
+ *      ext_ctrl[14].id = V4L2_CID_MPEG_VIDEO_VBV_SIZE;
+ *      ext_ctrl[14].value = 0;
+ *      ext_ctrl[15].id = V4L2_CID_MPEG_VIDEO_HEADER_MODE;
+ *      ext_ctrl[15].value = V4L2_MPEG_VIDEO_HEADER_MODE_SEPARATE;
+ *      ext_ctrl[16].id = V4L2_CID_MPEG_MFC51_VIDEO_RC_FIXED_TARGET_BIT;
+ *      ext_ctrl[16].value = 1;
+ *
+ */      /* Initial parameters : Frame Skip */
+/*      switch (pInitParam->FrameSkip) {
+ *      case VIDEO_FRAME_SKIP_MODE_LEVEL_LIMIT:
+ *          ext_ctrl[17].id = V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE;
+ *          ext_ctrl[17].value = V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_LEVEL_LIMIT;
+ *          break;
+ *      case VIDEO_FRAME_SKIP_MODE_BUF_LIMIT:
+ *          ext_ctrl[17].id = V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE;
+ *          ext_ctrl[17].value = V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_BUF_LIMIT;
+ *          break;
+ *      default:
+ */         /* VIDEO_FRAME_SKIP_MODE_DISABLE (default) */
+/*          ext_ctrl[17].id = V4L2_CID_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE;
+ *          ext_ctrl[17].value = V4L2_MPEG_MFC51_VIDEO_FRAME_SKIP_MODE_DISABLED;
+ *          break;
+ *      }
+ *
+ *      ext_ctrl[18].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_VERSION;
+ *      ext_ctrl[18].value = pVp8Param->Vp8Version;
+ *
+ *      ext_ctrl[19].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_NUM_OF_PARTITIONS;
+ *      ext_ctrl[19].value = pVp8Param->Vp8NumberOfPartitions;
+ *
+ *      ext_ctrl[20].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_FILTER_LEVEL;
+ *      ext_ctrl[20].value = pVp8Param->Vp8FilterLevel;
+ *
+ *      ext_ctrl[21].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_FILTER_SHARPNESS;
+ *      ext_ctrl[21].value = pVp8Param->Vp8FilterSharpness;
+ *
+ *      ext_ctrl[22].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_GOLDEN_FRAMESEL;
+ *      ext_ctrl[22].value = pVp8Param->Vp8GoldenFrameSel;
+ *
+ *      ext_ctrl[23].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_HIERARCHY_QP_ENABLE;
+ *      ext_ctrl[23].value = pVp8Param->HierarchyQpEnable;
+ *
+ *      ext_ctrl[24].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_HIERARCHY_QP_LAYER0;
+ *      ext_ctrl[24].value = pVp8Param->HierarchyQPLayer0;
+ *
+ *      ext_ctrl[25].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_HIERARCHY_QP_LAYER1;
+ *      ext_ctrl[25].value = pVp8Param->HierarchyQPLayer1;
+ *
+ *     ext_ctrl[26].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_HIERARCHY_QP_LAYER2;
+ *     ext_ctrl[26].value = pVp8Param->HierarchyQPLayer2;
+ *
+ *     ext_ctrl[27].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_REF_NUMBER_FOR_PFRAMES;
+ *     ext_ctrl[27].value = pVp8Param->RefNumberForPFrame;
+ *
+ *     ext_ctrl[28].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_DISABLE_INTRA_MD4X4;
+ *     ext_ctrl[28].value = pVp8Param->DisableIntraMd4x4;
+ *
+ *     ext_ctrl[29].id = V4L2_CID_MPEG_MFC70_VIDEO_VP8_NUM_TEMPORAL_LAYER;
+ *     ext_ctrl[29].value = pVp8Param->NumTemporalLayer;
+ *
+ *     ext_ctrls.count = VP8_CTRL_NUM;
+ *     break;
+ *  }
+ */ default:
         ALOGE("[%s] Undefined codec type",__func__);
         ret = VIDEO_ERROR_BADPARAM;
         goto EXIT;
@@ -1006,10 +1006,10 @@ static ExynosVideoErrorType MFC_Encoder_Check_RGBSupport(void *pHandle)
 
     version = getMFCVersion(pHandle);
     switch ((ExynosVideoMFCVersion)version) {
-    case MFC_72:
-        ret = VIDEO_ERROR_NONE;
-        break;
-    default:
+/*    case MFC_72:
+ *      ret = VIDEO_ERROR_NONE;
+ *      break;
+ */ default:
         ret = VIDEO_ERROR_NOSUPPORT;
         break;
     }
@@ -2670,10 +2670,10 @@ static int MFC_Encoder_Get_SpareSize_Inbuf(void *pHandle)
 
     version = getMFCVersion(pHandle);
     switch ((ExynosVideoMFCVersion)version) {
-    case MFC_72:
-        exynos_v4l2_g_ctrl(pCtx->hEnc, V4L2_CID_MPEG_MFC_GET_EXTRA_BUFFER_SIZE, &spareSize);
-        break;
-    default:
+/*   case MFC_72:
+ *      exynos_v4l2_g_ctrl(pCtx->hEnc, V4L2_CID_MPEG_MFC_GET_EXTRA_BUFFER_SIZE, &spareSize);
+ *      break;
+ */ default:
         spareSize = 0;
         break;
     }

@@ -655,14 +655,14 @@ static ExynosVideoErrorType MFC_Decoder_Enable_DualDPBMode(void *pHandle)
 
     version = getMFCVersion(pHandle);
     switch ((ExynosVideoMFCVersion)version) {
-    case MFC_72:
-        if (exynos_v4l2_s_ctrl(pCtx->hDec, V4L2_CID_MPEG_MFC_SET_DUAL_DPB_MODE, 1) != 0) {
-            ret = VIDEO_ERROR_APIFAIL;
-            goto EXIT;
-        }
-        ret = VIDEO_ERROR_NONE;
-        break;
-    default:
+/*    case MFC_72:
+ *       if (exynos_v4l2_s_ctrl(pCtx->hDec, V4L2_CID_MPEG_MFC_SET_DUAL_DPB_MODE, 1) != 0) {
+ *           ret = VIDEO_ERROR_APIFAIL;
+ *          goto EXIT;
+ *     }
+ *      ret = VIDEO_ERROR_NONE;
+ *      break;
+ */  default:
         ret = VIDEO_ERROR_NOSUPPORT;
         break;
     }
